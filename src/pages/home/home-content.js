@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Formik, Form } from 'formik';
 
 import { loanFormInitialValues, LoanFormSchema } from 'pages/home/home.schema';
+import HomeContext from 'pages/home/modules/services/home.context';
 import { GENDER_OPTIONS } from 'shared/constants/home.constant';
 import DatePicker from 'shared/components/date-picker';
 import Select from 'shared/components/select';
 import TextField from 'shared/components/text-field';
 
 export const Container = () => {
+  const { history } = useContext(HomeContext);
+
+  function handleSubmit(fields) {
+    history.push({
+      pathname: '/detail',
+      state: fields,
+    });
+  }
+
   return (
     <Formik
       initialValues={loanFormInitialValues}
       validationSchema={LoanFormSchema}
-      onSubmit={
-        (fields) => console.log(fields)
-      }
+      onSubmit={(fields) => handleSubmit(fields)}
       render={({ errors, touched }) => (
         <FormLoan errors={errors} touched={touched} />
       )}
